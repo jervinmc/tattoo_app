@@ -30,6 +30,7 @@ String _email ='';
     List data_dinner = [];
     List data_recommend = [];
    static String BASE_URL = '' + Global.url + '/tattoo/';
+     static String BASE_URL_CATEGORY = '' + Global.url + '/tattoo_market/';
    List feature = [];
   Future<String> getData() async {
     _load = true;
@@ -58,12 +59,40 @@ String _email ='';
           });
     return "";
   }
+  Future<String> getCategory() async {
+    _load = true;
+    final prefs = await SharedPreferences.getInstance();
+      _email = prefs.getString("_email").toString();
+    setState(() {
+      
+    });
+    var _id = prefs.getInt("_id");
+    final response = await http.get(
+        Uri.parse(BASE_URL_CATEGORY),
+        headers: {"Content-Type": "application/json"});
+        String jsonsDataString = response.body.toString();
+      final _data = jsonDecode(jsonsDataString);
+      data = data;
+      print(_data);
+        setState(() {
+            try {
+               data = _data;
+              print(data.length);
+              print(response);
+          
+            } finally {
+              _load = false;
+            }
+          });
+    return "";
+  }
   @override
   void initState() {
  
     // TODO: implement initState
     super.initState();
-    getData();
+    // getData();
+    getCategory();
   }
   @override
   Widget build(BuildContext context) {
@@ -79,7 +108,7 @@ String _email ='';
             DrawerHeader(
               child: Text('${_email}',style:TextStyle(color: Colors.white)),
               decoration: BoxDecoration(
-                color:  Color(0xffc6782b),
+                color:  Color(0xff222f3e),
               ),
             ),
             ListTile(
@@ -97,21 +126,22 @@ String _email ='';
             ListTile(
               title: Text('Appointment'),
               onTap: () {
-                Get.toNamed('/pantry');
+                Get.toNamed('/carts');
               },
             ),
             ListTile(
               title: Text('Logout'),
               onTap: () {
-              
+                
                  AwesomeDialog(
                 context: context,
                 dialogType: DialogType.QUESTION,
                 animType: AnimType.BOTTOMSLIDE,
                 title: "Are you sure you want to logout?",
                 desc: "",
-                btnOkOnPress: () {
-                  Navigator.pop(context);
+                btnOkOnPress: () async{
+                   final prefs = await SharedPreferences.getInstance();
+                   prefs.setBool('isLoggedIn', false);
                   Get.toNamed('/starting');
                 },
                 btnCancelOnPress: (){
@@ -125,34 +155,34 @@ String _email ='';
       ),
       appBar: AppBar(
         title: Text(''),
-        backgroundColor: Color(0xffc6782b),
+        backgroundColor: Color(0xff222f3e),
       ),
       body: ListView(
         children: [
-          Container(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                feature.length==0 ? Text('Loading...') :
-                InkWell(
-                  child:Container(
-                  child:Image.network("${feature[2]}"),
-                )
-                ,
-                onTap:() => {
-                    Get.toNamed('/details',arguments:['${feature[2]}','${feature[0]}','${feature[1]}'])
-                }
-                ),
-                 feature.length!=0 ? Column(children:[Text(feature[1],style: TextStyle(fontSize: 20.0,fontWeight:FontWeight.bold))],crossAxisAlignment:CrossAxisAlignment.center) : Text('')
+          // Container(
+          //   padding: EdgeInsets.all(15),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       feature.length==0 ? Text('Loading...') :
+          //       InkWell(
+          //         child:Container(
+          //         child:Image.network("${feature[2]}"),
+          //       )
+          //       ,
+          //       onTap:() => {
+          //           Get.toNamed('/details',arguments:['${feature[2]}','${feature[0]}','${feature[1]}'])
+          //       }
+          //       ),
+          //        feature.length!=0 ? Column(children:[Text(feature[1],style: TextStyle(fontSize: 20.0,fontWeight:FontWeight.bold))],crossAxisAlignment:CrossAxisAlignment.center) : Text('')
               
-              ],
-            ),
-          ),
+          //     ],
+          //   ),
+          // ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(0),
             child: Text(
-              "Recommended Tattoo",
+              "",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
             ),
           ),
@@ -169,10 +199,19 @@ String _email ='';
                 : Text(''),
           Container(
             height: 500,
-            child: GridView.builder(
+            child: ListView.builder(
               itemCount: data.length,
-              itemBuilder: (BuildContext context, index){
-                return Column(
+              itemBuilder: (BuildContext context,index)
+            {
+              return Column(children: [
+                Text(data[index]['category_name'],style: TextStyle(fontSize: 20.0,fontWeight:FontWeight.bold),),
+                Container(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                  itemCount:data[index]['tattoo_list'].length,
+                  itemBuilder: (BuildContext context, idx){
+                  return Column(
                   children: [
                     InkWell(
                       child: Card(
@@ -190,19 +229,17 @@ String _email ='';
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.network(data[index]['image'].toString(),fit: BoxFit.cover,height:100,width: 100,),
+                              Image.network(data[index]['tattoo_list'][idx]['image'].toString(),fit: BoxFit.cover,height:100,width: 100,),
                               
                               Padding(padding: EdgeInsets.only(bottom: 15))
                             ],
                           ),
                         )),
-                        onTap: (){
-                          Get.toNamed('/details',arguments:[]);
-                        },
+                        onTap:() => Get.toNamed('/details',arguments:["${data[index]['tattoo_list'][idx]['image']}","${data[index]['tattoo_list'][idx]['id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['price']}","${data[index]['tattoo_list'][idx]['user_id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}"]),
                     ),
                     Column(
                       children: [
-                        Text(data[index]['tattoo_name'],
+                        Text(data[index]['tattoo_list'][idx]['tattoo_name'],
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -214,14 +251,15 @@ String _email ='';
                                   )),
                       ],
                     ),
+                        
+                    
                   ],
                 );
-            }, gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 150,
-                childAspectRatio: 1 / 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 5),)
-          ),
+                }),
+                )
+              ]);
+            }))
+          ,
         ],
       ),
       floatingActionButton: FloatingActionButton(

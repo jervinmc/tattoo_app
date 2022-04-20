@@ -25,10 +25,10 @@ class _SignUpState extends State<SignUp> {
                 desc: desc,
                 btnOkOnPress: () {
                   if(DialogType.ERROR==type){
-                    
+
                   }
                   else{
-               
+                    Get.toNamed('/starting');
                   }
                 },
                 )..show();
@@ -43,6 +43,10 @@ class _SignUpState extends State<SignUp> {
       notify(DialogType.ERROR,'Password must be at least 8 characters.','');
       return ;
     }
+    if(_password.text!=_repassword.text){
+      notify(DialogType.ERROR,'Password does not match.','');
+      return ;
+    }
       var params = {
         "firstname":_firstname.text,
         "lastname":_lastname.text,
@@ -55,7 +59,7 @@ class _SignUpState extends State<SignUp> {
         _load=true;
       });
       final response = await http.post(Uri.parse(BASE_URL),headers: {"Content-Type": "application/json"},body:json.encode(params));
-      if(response.statusCode==200){
+      if(response.statusCode==201){
         setState(() {
           _load=false;
         });
@@ -75,6 +79,9 @@ class _SignUpState extends State<SignUp> {
    TextEditingController _firstname = new TextEditingController();
     TextEditingController _lastname = new TextEditingController();
   TextEditingController _password = new TextEditingController();
+  TextEditingController _repassword = new TextEditingController();
+
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -111,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                           )
                         ),
                         Container(
-                          padding: EdgeInsets.only(top: 20),
+                          padding: EdgeInsets.only(top: 10),
                           child: TextField(
                             controller: _firstname,
                             decoration: InputDecoration(
@@ -126,7 +133,7 @@ class _SignUpState extends State<SignUp> {
                           )
                         ),
                         Container(
-                          padding: EdgeInsets.only(top: 20),
+                          padding: EdgeInsets.only(top: 10),
                           child: TextField(
                             controller: _lastname,
                             decoration: InputDecoration(
@@ -141,7 +148,7 @@ class _SignUpState extends State<SignUp> {
                           )
                         ),
                         Container(
-                          height: 100,
+                     
                           padding: EdgeInsets.only(top: 10),
                           child: TextField(
                                     obscureText: true,
@@ -154,6 +161,23 @@ class _SignUpState extends State<SignUp> {
                                         filled: true,
                                         hintStyle: TextStyle(color: Colors.grey[800]),
                                         hintText: "Password",
+                                        fillColor: Colors.white70),
+                                  )
+                        ),
+                        Container(
+                          height: 100,
+                          padding: EdgeInsets.only(top: 10),
+                          child: TextField(
+                                    obscureText: true,
+                                    controller: _repassword,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(8.0),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                        ),
+                                        filled: true,
+                                        hintStyle: TextStyle(color: Colors.grey[800]),
+                                        hintText: "Retype Password",
                                         fillColor: Colors.white70),
                                   )
                         ),
@@ -179,7 +203,7 @@ class _SignUpState extends State<SignUp> {
                           child: ElevatedButton(
                               child: Text('Cancel',style: TextStyle(color: Colors.black),),
                             onPressed: () {
-                              Get.toNamed('/login');
+                              Get.toNamed('/starting');
                             },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
