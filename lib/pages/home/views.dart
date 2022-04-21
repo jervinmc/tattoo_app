@@ -159,26 +159,6 @@ String _email ='';
       ),
       body: ListView(
         children: [
-          // Container(
-          //   padding: EdgeInsets.all(15),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       feature.length==0 ? Text('Loading...') :
-          //       InkWell(
-          //         child:Container(
-          //         child:Image.network("${feature[2]}"),
-          //       )
-          //       ,
-          //       onTap:() => {
-          //           Get.toNamed('/details',arguments:['${feature[2]}','${feature[0]}','${feature[1]}'])
-          //       }
-          //       ),
-          //        feature.length!=0 ? Column(children:[Text(feature[1],style: TextStyle(fontSize: 20.0,fontWeight:FontWeight.bold))],crossAxisAlignment:CrossAxisAlignment.center) : Text('')
-              
-          //     ],
-          //   ),
-          // ),
           Container(
             padding: EdgeInsets.all(0),
             child: Text(
@@ -198,7 +178,7 @@ String _email ='';
                   )
                 : Text(''),
           Container(
-            height: 500,
+            height: 650,
             child: ListView.builder(
               itemCount: data.length,
               itemBuilder: (BuildContext context,index)
@@ -262,14 +242,14 @@ String _email ='';
           ,
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed('/addmenu');
-          // Add your onPressed code here!
-        },
-        backgroundColor: Color(0xffc6782b),
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Get.toNamed('/addmenu');
+      //     // Add your onPressed code here!
+      //   },
+      //   backgroundColor: Color(0xffc6782b),
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }
