@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  ar_core: ^0.0.1
   get: ^4.3.8
   awesome_dialog: ^2.1.1
   http:

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -18,6 +19,7 @@ class _CartsState extends State<Carts> {
   
 
  static String BASE_URL = '' + Global.url + '/transaction_clientid';
+ static String BASE_URL_CANCEL = '' + Global.url + '/transaction';
   List data = [];
   bool _load = false;
   Future<String> getData() async {
@@ -50,7 +52,7 @@ class _CartsState extends State<Carts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carts'),
+        title: Text('Transactions'),
         backgroundColor: Color(0xff222f3e),
       ),
       body:  _load
@@ -83,7 +85,55 @@ class _CartsState extends State<Carts> {
                     Image.network(data[index]['image'],height:50.0),
                     Text("${data[index]['status']}")
                   ],),
-                  trailing: Text("${data[index]['transaction_date']}"),
+                  trailing: Column(
+                    children: [
+                      Text("${data[index]['transaction_date']}"),
+                      Text("Php ${data[index]['price']}"),
+                    data[index]['status']!='Cancelled' ? Container(
+                      width:100,
+                      child:  InkWell(
+                        onTap: (){
+                           AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.QUESTION,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: "Are you sure you want to cancel your appointment?",
+                            desc: "",
+                            btnOkOnPress: () async{
+                                  var params = {
+                                    "status": "Cancelled",
+                                   
+                                  };
+                                  final response = await http.patch(Uri.parse(BASE_URL_CANCEL +'/'+"${data[index]['id']}/"),
+                                      headers: {"Content-Type": "application/json"},
+                                      body: json.encode(params));
+                             
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.SUCCES,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title: "Successfull Cancelled !",
+                                    desc: "",
+                                    btnOkOnPress: () {
+                                      Get.toNamed('/home');
+                                    },
+                                  )..show();
+                            },
+                            btnCancelOnPress: (){
+
+                            }
+                          )..show();
+                        },
+                        child: Row(
+                       children: [
+                          Icon(Icons.close,color:Colors.red),
+                          Text('- Cancel')
+                       ],
+                     ),
+                      )
+                    ) : Text('')
+                    ],
+                  ),
                 ),
                 );
               },separatorBuilder: (context, index) {

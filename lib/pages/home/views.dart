@@ -124,9 +124,21 @@ String _email ='';
               },
             ),
             ListTile(
+              title: Text('Artists'),
+              onTap: () {
+                Get.toNamed('/artist');
+              },
+            ),
+            ListTile(
               title: Text('Appointment'),
               onTap: () {
                 Get.toNamed('/carts');
+              },
+            ),
+             ListTile(
+              title: Text('Terms & Conditions'),
+              onTap: () {
+                Get.toNamed('/terms');
               },
             ),
             ListTile(
@@ -215,11 +227,11 @@ String _email ='';
                             ],
                           ),
                         )),
-                        onTap:() => Get.toNamed('/details',arguments:["${data[index]['tattoo_list'][idx]['image']}","${data[index]['tattoo_list'][idx]['id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['price']}","${data[index]['tattoo_list'][idx]['user_id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}"]),
+                        onTap:() => Get.toNamed('/details',arguments:["${data[index]['tattoo_list'][idx]['image']}","${data[index]['tattoo_list'][idx]['id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['price']}","${data[index]['tattoo_list'][idx]['user_id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['time_estimation']}"]),
                     ),
                     Column(
                       children: [
-                        Text(data[index]['tattoo_list'][idx]['tattoo_name'],
+                        Text("${data[index]['tattoo_list'][idx]['tattoo_name']}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,

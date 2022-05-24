@@ -45,6 +45,7 @@ class _DetailsState extends State<Details> {
     setState(() {
       _load = true;
     });
+    print(_selectedDate);
     final prefs = await SharedPreferences.getInstance();
     var _id = prefs.getInt("_id");
     var params = {
@@ -54,6 +55,7 @@ class _DetailsState extends State<Details> {
       "design_id": args[1],
       "artist_id": args[4],
       "image": args[0],
+      "price": args[3],
       "transaction_date": _selectedDate
     };
     final response = await http.post(Uri.parse(BASE_URL),
@@ -123,21 +125,21 @@ class _DetailsState extends State<Details> {
                     height: 200,
                     width: 400,
                     child: Image.network(args[0], fit: BoxFit.cover)),
-                Positioned(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      size: 30,
-                      color: isLiked ? Colors.red : Colors.grey,
-                    ),
-                    onPressed: () {
-                      // addLike();
-                      Get.toNamed('/home');
-                    },
-                  ),
-                  top: 10,
-                  right: 10,
-                )
+                // Positioned(
+                //   child: IconButton(
+                //     icon: Icon(
+                //       Icons.favorite,
+                //       size: 30,
+                //       color: isLiked ? Colors.red : Colors.grey,
+                //     ),
+                //     onPressed: () {
+                //       // addLike();
+                //       Get.toNamed('/home');
+                //     },
+                //   ),
+                //   top: 10,
+                //   right: 10,
+                // )
               ],
             ),
             Padding(padding: EdgeInsets.only(bottom: 10)),
@@ -153,6 +155,18 @@ class _DetailsState extends State<Details> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Php ${args[3]}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0)),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Estimated time: ${args[6]} Minutes",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0)),
@@ -220,14 +234,14 @@ class _DetailsState extends State<Details> {
                         icon: Icon(Icons.event),
                         dateLabelText: 'Date',
                         timeLabelText: "Hour",
-                        selectableDayPredicate: (date) {
-                          // Disable weekend days to select from the calendar
-                          if (date.weekday == 6 || date.weekday == 7) {
-                            return false;
-                          }
+                        // selectableDayPredicate: (date) {
+                        //   // Disable weekend days to select from the calendar
+                        //   // if (date.weekday == 6 || date.weekday == 7) {
+                        //   //   return false;
+                        //   // }
 
-                          return true;
-                        },
+                        //   // return true;
+                        // },
                         onChanged: (val) => _selectedDate=val,
                         validator: (val) {
                           print(val);
@@ -257,6 +271,7 @@ class _DetailsState extends State<Details> {
                               },
                             ),
                           ),
+                           
                           //  Container(
                           //   padding: EdgeInsets.all(15),
                           //   width: 150,
@@ -274,7 +289,26 @@ class _DetailsState extends State<Details> {
                           //   ),
                           // ),
                         ],
-                      )
+                      ),
+                      Container(
+                            padding: EdgeInsets.all(15),
+                            width: 300,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color(0xff222f3e)),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ))),
+                              child: Text('Try this'),
+                              onPressed: () {
+                                  Get.toNamed("/augmented",arguments:[args[0]]);
+                              },
+                            ),
+                          ),
                     ],
                   )
                 ])),

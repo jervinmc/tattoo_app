@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tattoo_ap/pages/artist_tattoo/views.dart';
+import 'package:tattoo_ap/pages/artists/views.dart';
+import 'package:tattoo_ap/pages/augmented/views.dart';
 import 'package:tattoo_ap/pages/details/views.dart';
 import 'package:tattoo_ap/pages/home/views.dart';
 import 'package:tattoo_ap/pages/register/views.dart';
@@ -27,6 +30,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/home", page:()=>Home()),
         GetPage(name: "/details", page:()=>Details()),
          GetPage(name: "/carts", page:()=>Carts()),
+         GetPage(name: "/augmented", page:()=>AugmentedR()),
+         GetPage(name: "/artist", page:()=>Artists()),
+         GetPage(name: "/artist_tattoo", page:()=>ArtistTattoo()),
         // GetPage(name: "/signup", page:()=>SignUp()),
         // GetPage(name: "/profile", page:()=>Profile()),
         // GetPage(name: "/resetPassword", page:()=>ResetPassword()),
