@@ -120,7 +120,7 @@ class _ArtistTattooState extends State<ArtistTattoo> {
                             ],
                           ),
                         )),
-                        onTap:() => Get.toNamed('/details',arguments:["${data[index]['tattoo_list'][idx]['image']}","${data[index]['tattoo_list'][idx]['id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['price']}","${data[index]['tattoo_list'][idx]['user_id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}"]),
+                        onTap:() => Get.toNamed('/details',arguments:["${data[index]['tattoo_list'][idx]['image']}","${data[index]['tattoo_list'][idx]['id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['price']}","${data[index]['tattoo_list'][idx]['user_id']}","${data[index]['tattoo_list'][idx]['tattoo_name']}","${data[index]['tattoo_list'][idx]['time_estimation']}"]),
                     ),
                     Column(
                       children: [

@@ -33,7 +33,12 @@ class _SignUpState extends State<SignUp> {
                 },
                 )..show();
     }
+    bool isChecked =false;
   void SignUp() async {
+    if(!isChecked){
+        notify(DialogType.ERROR,'Please accept terms and conditions.','');
+      return ;
+    }
     if(_email.text==null || _password.text==null || _email.text=='' || _password.text=='') {
         notify(DialogType.ERROR,'Field is required.','Please fill up the form.');
         
@@ -86,7 +91,9 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body:  Column(
+      body: ListView(
+        children:[
+           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -181,6 +188,27 @@ class _SignUpState extends State<SignUp> {
                                         fillColor: Colors.white70),
                                   )
                         ),
+                         Container(
+                          padding: EdgeInsets.all(1),
+                          child:  Text('Terms & Conditions',style:TextStyle(fontSize: 20.0))
+                        ),
+                         Container(
+                          padding: EdgeInsets.all(1 ),
+                          child: Flexible(child: Text('When booking an appointment, clients must guarantee that they are above the age of 18. The information they provide must be accurate, complete, and current at all times. Inaccurate, incomplete, or incorrect information may result in the immediate termination of the appointment.'))
+                        ),
+                         Container(
+                          padding: EdgeInsets.only(top:10 ),
+                          child: Flexible(child: Text('Do not cancel or reschedule at the last minute. Tattoo artists may have spent time drawing and preparing for your appointment and have also likely turned away other clients because their time was reserved for you. Please be respectful and show your commitment to getting tattooed by showing up for your appointment.'))
+                        ),
+                        Checkbox(
+                        value: isChecked,
+                        onChanged: (val){
+                           setState(() {
+                             isChecked = val!; 
+                           });
+                        }
+                      ),
+                        
                         Container(
                           padding: EdgeInsets.only(top: 15),
                           width: 250,
@@ -231,6 +259,8 @@ class _SignUpState extends State<SignUp> {
               
             ],
           )
+        ]
+      )
     ),
     );
 }

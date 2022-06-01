@@ -120,7 +120,7 @@ String _email ='';
             ListTile(
               title: Text('Your Designs'),
               onTap: () {
-                Get.toNamed('/user_meals');
+                Get.toNamed('/designs');
               },
             ),
             ListTile(

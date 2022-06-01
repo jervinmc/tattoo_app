@@ -89,7 +89,7 @@ class _CartsState extends State<Carts> {
                     children: [
                       Text("${data[index]['transaction_date']}"),
                       Text("Php ${data[index]['price']}"),
-                    data[index]['status']!='Cancelled' ? Container(
+                    data[index]['status']=='Pending' ? Container(
                       width:100,
                       child:  InkWell(
                         onTap: (){
